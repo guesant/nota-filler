@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 40rem;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.fields {
+  flex: 1;
+  align-content: start;
+  overflow: auto;
+  padding: 0.75rem 1rem;
+}
+
+.fields,
+.nextDueDates,
+.genericVersionsInfo,
+.personFields {
+  gap: 1rem;
+  display: grid;
+}
+
+.versions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.versions .item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.versions .item > * {
+  width: 100%;
+}
+
+@media screen and (min-width: 720px) {
+  .personFields {
+    grid-template-columns: 5fr minmax(11.25rem, 2.5fr);
+  }
+
+  .genericVersionsInfo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .personFields :is(.address),
+  .genericVersionsInfo :is(.firstDueDateContainer, .nextDueDatesContainer) {
+    grid-column: 1/-1;
+  }
+
+  .nextDueDates {
+    margin-top: 0.5rem;
+    grid-template-columns: auto minmax(auto, 9rem);
+  }
+
+  .version .item {
+    flex-direction: row;
+  }
+
+  .version .item > * {
+    width: auto;
+    flex: 1;
+  }
+}

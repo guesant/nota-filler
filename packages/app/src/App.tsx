@@ -1,16 +1,25 @@
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import CssBaseline from "@mui/material/CssBaseline";
-import dateFNSLocalePTBR from "date-fns/locale/pt-BR";
+import { lazy } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import AppLayout from './components/AppLayout';
+
+const Tilibra13135Generator = lazy(
+  async () =>
+    import('./components/Generators/tilibra-13135/Tilibra13135Generator')
+);
 
 const App = () => (
-  <CssBaseline>
-    <LocalizationProvider
-      dateAdapter={AdapterDateFns}
-      locale={dateFNSLocalePTBR}
-    >
-    </LocalizationProvider>
-  </CssBaseline>
+  <AppLayout>
+    <Routes>
+      <Route path={'generators'}>
+        <Route path={'tilibra'}>
+          <Route path={'13135'} element={<Tilibra13135Generator />} />
+          <Route path={''} element={<Navigate to={'13135'} />} />
+        </Route>
+        <Route path={''} element={<Navigate to={'tilibra/13135'} />} />
+      </Route>
+      <Route path={'*'} element={<Navigate to={'generators'} />} />
+    </Routes>
+  </AppLayout>
 );
 
 export default App;

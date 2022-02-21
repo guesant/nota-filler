@@ -1,4 +1,7 @@
+.idea
 .pnpm-store
+
+packages/*/dist
 
 # Logs
 logs

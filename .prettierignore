@@ -1,0 +1,8 @@
+node_modules
+
+.idea
+.pnpm-store
+
+packages/*/dist
+
+pnpm-lock.yaml

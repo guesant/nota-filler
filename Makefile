@@ -1,12 +1,12 @@
 PROJECT_DATA=$(shell pwd)
 
-DOCKER_CONTAINER_IMAGE=cl00e9ment/node.js-builder
-DOCKER_CONTAINER_IMAGE_SHELL=sh
+DOCKER_CONTAINER_IMAGE=$(shell basename $(PROJECT_DATA))-node
+DOCKER_CONTAINER_IMAGE_SHELL=bash
 
-DOCKER_CONTAINER_NAME=$(shell basename $(PROJECT_DATA))-node
+DOCKER_CONTAINER_NAME=$(shell basename $(PROJECT_DATA))-container
 
 DOCKER_RUN_EXTRA_ARGS=
-DOCKER_RUN_EXTRA_ARGS_DEV=-p 1234:1234
+DOCKER_RUN_EXTRA_ARGS_DEV=-p 3000:3000
 DOCKER_RUN_EXTRA_ARGS_BUILD=
 
 define spawn = 
@@ -24,11 +24,14 @@ endef
 clear:
 	rm -rf ./packages/app/dist
 
+docker-prepare:
+	docker build -t $(DOCKER_CONTAINER_IMAGE) ./docker
+
 attach:
 	docker exec -it $(DOCKER_CONTAINER_NAME) $(DOCKER_CONTAINER_IMAGE_SHELL)
 
 start:
-
+	make docker-prepare
 	if [ $(shell docker ps -q --filter "name=$(DOCKER_CONTAINER_NAME)" | wc -l) -gt 0 ] ; then \
 		make attach ;\
 	else \
@@ -36,10 +39,12 @@ start:
 	fi
 
 dev:
+	make docker-prepare
 	$(call spawn,$(DOCKER_RUN_EXTRA_ARGS_DEV),-c "pnpm install && pnpm run dev")
 
 build:
 	make clear
+	make docker-prepare
 	$(call spawn,$(DOCKER_RUN_EXTRA_ARGS_BUILD),-c "pnpm install && pnpm run build")
 
 stop:

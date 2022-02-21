@@ -1,0 +1,10 @@
+:global(:is(html, body, #root)),
+.app {
+  height: 100%;
+}
+
+.app {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
